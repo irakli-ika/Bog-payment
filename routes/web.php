@@ -17,6 +17,8 @@ Route::post('/bog/payment/subscription', [BogController::class, 'subscription'])
 
 Route::post('/bog/payment/subscription/charge', [BogController::class, 'chargeSubscription'])->name('chargeSubscription');
 
+Route::post('/bog/payment/refund', [BogController::class, 'refund'])->name('refund');
+
 Route::post('/bog/payment/callback', BogPaymentCallbackController::class)->withoutMiddleware(VerifyCsrfToken::class);
 
 Route::get('/bog/payment/processing/{transaction_id}', function () {

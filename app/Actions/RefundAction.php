@@ -8,7 +8,7 @@ use App\Models\Transaction;
 use App\Services\Bog\BogOrder;
 use Illuminate\Support\Str;
 
-class ChargeSubscriptionAction
+class RefundAction
 {
     public function handle(string $parentOrderId, int $userId): void
     {
@@ -19,13 +19,13 @@ class ChargeSubscriptionAction
             'user_id' => $userId,
             'amount' => $parentTransaction->amount,
             'payment_method' => 'bog',
-            'type' => 'chargeSubscription'
+            'type' => 'refund'
         ]);
 
         $paymentDetails = BogOrder::make()
             ->withIdempotencyKey($transaction->idempotency_key)
             ->externalOrderId($transaction->id)
-            ->chargeSubscription($parentOrderId);
+            ->refund($parentOrderId);
 
         $transaction->update([
             'transaction_id' => $paymentDetails['id'],

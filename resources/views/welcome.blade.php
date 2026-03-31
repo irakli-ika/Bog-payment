@@ -41,6 +41,10 @@
                 @csrf
                 <button class="border px-1">Charge Subscription</button>
             </form>
+            <form action="{{ route('refund') }}" method="post">
+                @csrf
+                <button class="border px-1">Refund</button>
+            </form>
         </section>
     </body>
 </html>

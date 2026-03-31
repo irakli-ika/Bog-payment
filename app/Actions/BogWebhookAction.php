@@ -33,6 +33,7 @@ class BogWebhookAction
             match ($transaction->type) {
                 'saveCard' => $this->handleSaveCard($transaction, $payload),
                 'subscribe' => $this->handleSubscription($transaction, $payload),
+                default => null,
             };
         });
     }

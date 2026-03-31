@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Bog;
 
+use Illuminate\Support\Facades\Log;
+
 class BogOrder extends Payment
 {
     public static function make(): static
@@ -76,6 +78,19 @@ class BogOrder extends Payment
     public function chargeSubscription(string $parentOrderId): array
     {
         $response = $this->bogApiClient->post("/ecommerce/orders/{$parentOrderId}/subscribe", $this->payload);
+
+        $this->resetPayload();
+
+        return [
+            'id' => $response['id'],
+            'details_url' => $response['_links']['details']['href'],
+        ];
+    }
+
+    public function refund(string $parentOrderId): array
+    {
+        $response = $this->bogApiClient->post("/payment/refund/{$parentOrderId}", $this->payload);
+        Log::info('Refund -> '. $response);
 
         $this->resetPayload();
 
