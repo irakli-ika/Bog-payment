@@ -17,6 +17,7 @@ class CreateBogOrderAction
             'user_id' => $userId,
             'amount' => $amount,
             'payment_method' => 'bog',
+            'type' => $saveCard ? 'saveCard' : 'normal',
         ]);
 
         $bogOrder = BogOrder::make()
@@ -37,7 +38,6 @@ class CreateBogOrderAction
 
         $transaction->update([
             'transaction_id' => $paymentDetails['id'],
-            'save_card' => $saveCard,
         ]);
 
         return $paymentDetails;

@@ -37,6 +37,10 @@
                 @csrf
                 <button class="border px-1">Subscribe</button>
             </form>
+            <form action="{{ route('chargeSubscription') }}" method="post">
+                @csrf
+                <button class="border px-1">Charge Subscription</button>
+            </form>
         </section>
     </body>
 </html>

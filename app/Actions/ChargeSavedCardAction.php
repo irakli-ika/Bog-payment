@@ -17,6 +17,7 @@ class ChargeSavedCardAction
             'user_id' => $userId,
             'amount' => $amount,
             'payment_method' => 'bog',
+            'type' => 'chargeCard'
         ]);
 
         $paymentDetails = BogOrder::make()

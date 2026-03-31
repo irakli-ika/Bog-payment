@@ -14,17 +14,19 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('idempotency_key')->unique();
-            $table->string('transaction_id')->nullable();
+            $table->string('transaction_id')->unique()->nullable();
             $table->foreignId('user_id');
             $table->foreignId('card_id')->nullable();
-            $table->string('status')->default('pending');
-            // $table->enum('status', ['pending', 'processing', 'completed', 'failed', 'cancelled'])->default('pending'); // remove in mysql
+            $table->string('status')->default('pending'); // remove in mysql
+            // $table->enum('status', ['pending', 'processing', 'completed', 'failed', 'cancelled'])->default('pending');
             $table->unsignedInteger('amount');
-            $table->string('currency')->default('gel');
-            // $table->enum('currency', ['gel', 'usd'])->default('gel'); // remove in mysql
-            $table->string('payment_method');
-            $table->boolean('save_card')->default(0);
-            // $table->enum('payment_method', ['bog', 'tbc', 'mbank']); // remove in mysql
+            $table->string('currency')->default('gel'); // remove in mysql
+            // $table->enum('currency', ['gel', 'usd'])->default('gel');
+            $table->string('payment_method'); // remove in mysql
+            // $table->enum('payment_method', ['bog', 'tbc', 'mbank']);
+            $table->string('type')->default('normal'); // remove in mysql
+            // $table->enum('type', ['normal', 'saveCard', 'chargeCard', 'subscribe', 'chargeSubscription']);
+            // // $table->boolean('save_card')->default(0);
             $table->json('log')->nullable();
             $table->timestamps();
         });

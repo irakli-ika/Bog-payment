@@ -11,9 +11,11 @@ Route::get('/', function () {
 
 Route::post('/bog/payment', [BogController::class, 'createOrder'])->name('pay');
 
-Route::post('/bog/payment/card', [BogController::class, 'chargeSavedCard'])->name('charge');
+Route::post('/bog/payment/card/charge', [BogController::class, 'chargeSavedCard'])->name('charge');
 
 Route::post('/bog/payment/subscription', [BogController::class, 'subscription'])->name('subscription');
+
+Route::post('/bog/payment/subscription/charge', [BogController::class, 'chargeSubscription'])->name('chargeSubscription');
 
 Route::post('/bog/payment/callback', BogPaymentCallbackController::class)->withoutMiddleware(VerifyCsrfToken::class);
 

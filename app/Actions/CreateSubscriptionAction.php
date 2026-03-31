@@ -17,6 +17,7 @@ class CreateSubscriptionAction
             'user_id' => $userId,
             'amount' => $amount,
             'payment_method' => 'bog',
+            'type' => 'subscribe',
         ]);
 
         $paymentDetails = BogOrder::make()
@@ -27,10 +28,8 @@ class CreateSubscriptionAction
             ->redirectUrls(route('payment.success'), route('payment.fail'))
             ->subscribe();
 
-
         $transaction->update([
             'transaction_id' => $paymentDetails['id'],
-            'save_card' => true,
         ]);
 
         return $paymentDetails;

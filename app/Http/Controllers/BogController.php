@@ -17,7 +17,7 @@ class BogController extends Controller
     public function createOrder(Request $request, CreateBogOrderAction $createBogOrder): RedirectResponse
     {
         try {
-            $response = $createBogOrder->handle(1, 50000, ['quantity' => 1, 'unit_price' => 0, 'product_id' => 1], $request->boolean('save_card'));
+            $response = $createBogOrder->handle(1, 0, ['quantity' => 1, 'unit_price' => 0, 'product_id' => 1], $request->boolean('save_card'));
 
             return redirect()->away($response['redirect_url']);
 
@@ -31,7 +31,7 @@ class BogController extends Controller
     public function chargeSavedCard(ChargeSavedCardAction $chargeSavedCard)
     {
         try {
-            $response = $chargeSavedCard->handle('6bccd89b-5d7e-41b9-a0f0-22e4d668376a', 1, 50000, ['quantity' => 1, 'unit_price' => 0, 'product_id' => 1]);
+            $response = $chargeSavedCard->handle('0aab479f-0ada-4c91-9780-898971d6531f', 1, 0, ['quantity' => 1, 'unit_price' => 0, 'product_id' => 1]);
 
             return redirect()->route('payment.processing', $response['id']);
         } catch (\Exception $e) {
@@ -44,7 +44,7 @@ class BogController extends Controller
     public function subscription(CreateSubscriptionAction $createSubscription): RedirectResponse
     {
         try {
-            $response = $createSubscription->handle(1, 50000, ['quantity' => 1, 'unit_price' => 0, 'product_id' => 1]);
+            $response = $createSubscription->handle(1, 0, ['quantity' => 1, 'unit_price' => 0, 'product_id' => 1]);
 
             return redirect()->away($response['redirect_url']);
 
@@ -55,8 +55,8 @@ class BogController extends Controller
         }
     }
 
-    public function ChargeSubscription(ChargeSubscriptionAction $chargeSubscription)
+    public function chargeSubscription(ChargeSubscriptionAction $chargeSubscription)
     {
-        $chargeSubscription->handle('6bccd89b-5d7e-41b9-a0f0-22e4d668376a', 1);
+        $chargeSubscription->handle('c9c0abe1-fd21-42bd-8772-7c9815eca5a5', 1);
     }
 }

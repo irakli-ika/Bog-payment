@@ -17,9 +17,17 @@ class Transaction extends Model
         'amount',
         'currency',
         'payment_method',
-        'save_card',
+        'type',
+        // 'save_card',
         'log',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'log' => 'json',
+        ];
+    }
 
     public function user(): BelongsTo
     {

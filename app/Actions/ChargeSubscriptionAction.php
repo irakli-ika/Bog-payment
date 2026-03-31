@@ -12,13 +12,14 @@ class ChargeSubscriptionAction
 {
     public function handle(string $parentOrderId, int $userId): array
     {
-        $parentTransaction = Transaction::where('transaction_id', $parentOrderId)->firstOrFail()->amount;
+        $parentTransaction = Transaction::where('transaction_id', $parentOrderId)->firstOrFail();
 
         $transaction = Transaction::create([
             'idempotency_key' => Str::uuid(),
             'user_id' => $userId,
             'amount' => $parentTransaction->amount,
             'payment_method' => 'bog',
+            'type' => 'chargeSubscription'
         ]);
 
         $paymentDetails = BogOrder::make()
@@ -36,4 +37,4 @@ class ChargeSubscriptionAction
     }
 }
 
-// Set type in transaction table [normall, saveCard, chargeCard, subscribe, chargeSubscription]
+// Set type in transaction table [normal, saveCard, chargeCard, subscribe, chargeSubscription]
