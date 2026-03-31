@@ -8,28 +8,32 @@ use App\Models\Transaction;
 use App\Services\Bog\BogOrder;
 use Illuminate\Support\Str;
 
-class ChargeSavedCardAction
+class ChargeSubscriptionAction
 {
-    public function handle(string $parentOrderId, int $userId, int $amount, array $basket = []): array
+    public function handle(string $parentOrderId, int $userId): array
     {
+        $parentTransaction = Transaction::where('transaction_id', $parentOrderId)->firstOrFail()->amount;
+
         $transaction = Transaction::create([
             'idempotency_key' => Str::uuid(),
             'user_id' => $userId,
-            'amount' => $amount,
+            'amount' => $parentTransaction->amount,
             'payment_method' => 'bog',
         ]);
 
         $paymentDetails = BogOrder::make()
             ->withIdempotencyKey($transaction->idempotency_key)
-            ->totalAmount($amount)
             ->externalOrderId($transaction->id)
-            ->basket($basket)
-            ->chargeCard($parentOrderId);
+            ->chargeSubscription($parentOrderId);
 
         $transaction->update([
             'transaction_id' => $paymentDetails['id'],
         ]);
 
+        // Send notification with event here
+
         return $paymentDetails;
     }
 }
+
+// Set type in transaction table [normall, saveCard, chargeCard, subscribe, chargeSubscription]

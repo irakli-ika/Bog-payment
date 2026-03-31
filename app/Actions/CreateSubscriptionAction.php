@@ -10,22 +10,22 @@ use Illuminate\Support\Str;
 
 class CreateSubscriptionAction
 {
-    public function handle(): array
+    public function handle(int $userId, int $amount, array $basket = []): array
     {
         $transaction = Transaction::create([
             'idempotency_key' => Str::uuid(),
-            'user_id' => 1,
-            'amount' => 0,
+            'user_id' => $userId,
+            'amount' => $amount,
             'payment_method' => 'bog',
         ]);
 
         $paymentDetails = BogOrder::make()
             ->withIdempotencyKey($transaction->idempotency_key)
-            ->totalAmount($transaction->amount)
+            ->totalAmount($amount)
             ->externalOrderId($transaction->id)
-            ->basket(['quantity' => 1, 'unit_price' => 0, 'product_id' => 1])
+            ->basket($basket)
             ->redirectUrls(route('payment.success'), route('payment.fail'))
-            ->subscription();
+            ->subscribe();
 
 
         $transaction->update([

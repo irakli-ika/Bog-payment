@@ -58,7 +58,7 @@ class BogOrder extends Payment
         ];
     }
 
-    public function subscription(): array
+    public function subscribe(): array
     {
         $response = $this->bogApiClient->post('/ecommerce/orders', $this->payload);
 
@@ -69,6 +69,18 @@ class BogOrder extends Payment
         return [
             'id' => $response['id'],
             'redirect_url' => $response['_links']['redirect']['href'],
+            'details_url' => $response['_links']['details']['href'],
+        ];
+    }
+
+    public function chargeSubscription(string $parentOrderId): array
+    {
+        $response = $this->bogApiClient->post("/ecommerce/orders/{$parentOrderId}/subscribe", $this->payload);
+
+        $this->resetPayload();
+
+        return [
+            'id' => $response['id'],
             'details_url' => $response['_links']['details']['href'],
         ];
     }
